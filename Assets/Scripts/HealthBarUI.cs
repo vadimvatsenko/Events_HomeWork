@@ -44,7 +44,9 @@ public class HealthBarUI : MonoBehaviour
             elapsedTime += Time.deltaTime; // за каждой итерации будем добавлять значение времени
 
             float percentageComplete = Mathf.Clamp01(elapsedTime / duration); // Mathf.Clamp01 ограничивает значение value между 0 и 1
-            // elapsedTime / duration - 
+            // elapsedTime / duration - Здесь мы вычисляем отношение текущего времени анимации (elapsedTime) к полной длительности анимации (duration).
+            // Если, например, elapsedTime — это 0.25 секунд, а duration — это 1 секунда, то отношение будет равно 0.25, что означает, что 25 % анимации завершено.
+            // Это отношение увеличивается с течением времени, от 0(в начале) до 1(когда анимация завершена).
 
             float currentHealth = Mathf.Lerp(startHeath, health, percentageComplete); 
             // percentageComplete может быть от 0 до 1, чем ближе значение, тем ближе currentHealth к health
