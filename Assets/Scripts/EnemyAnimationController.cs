@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class EnemyAnimationController : MonoBehaviour
 {
+    public enum AnimName
+    {
+        hit_1,
+        death
+    }
+
+    private float _delay = 0.5f;
     private Animator _animator;
     private AttackBtn _attackBtn;
 
@@ -24,39 +31,28 @@ public class EnemyAnimationController : MonoBehaviour
 
     private void OnDisable()
     {
-        _attackBtn.HitEvent -= TakeDamage;
+        _attackBtn.HitEvent -= OnHitEvent;
         _attackBtn.DeathEvent -= OnDeathEvent;
     }
 
     private void OnHitEvent()
     {
-        StartCoroutine(PlayHitAnimWithDelay());
+        StartCoroutine(PlayAnimWithDelay("hit_1", _delay));
     }
 
     private void OnDeathEvent()
     {
-        StartCoroutine(PlayHitAnimWithDelay());
+        StartCoroutine(PlayAnimWithDelay("death", _delay));
     }
 
-    private IEnumerator PlayHitAnimWithDelay()
+    private IEnumerator PlayAnimWithDelay(string animName, float delay)
     {
         yield return new WaitForSeconds(0.25f);
-        TakeDamage();
+        PlayAnim(animName);
     }
 
-    private IEnumerator PlayDeathAnimWithDelay()
+    private void PlayAnim(string animName)
     {
-        yield return new WaitForSeconds(0.25f);
-        DeathAnimation();
-    }
-
-    private void TakeDamage()
-    {
-        _animator.SetTrigger("hit_1");
-    }
-
-    private void DeathAnimation()
-    {
-        _animator.SetTrigger("death");
+        _animator.SetTrigger(animName);
     }
 }
