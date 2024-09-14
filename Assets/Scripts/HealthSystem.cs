@@ -14,12 +14,12 @@ public class HealthSystem : MonoBehaviour
     }
     private void OnEnable()
     {
-        _attackBtn.OnButtonClickEvent += TakeDamage;
+        _attackBtn.TakeDamageEvent += TakeDamage;
     }
 
     private void OnDisable()
     {
-        _attackBtn.OnButtonClickEvent -= TakeDamage;
+        _attackBtn.TakeDamageEvent -= TakeDamage;
     }
 
     private int TakeDamage(int damage)

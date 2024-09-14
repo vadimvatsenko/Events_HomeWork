@@ -10,6 +10,8 @@ public class AudioManager : MonoBehaviour
     private AudioClip _takeDamageSound;
     private AudioClip _deathSound;
 
+    private float _delay = 0.5f;
+
     private void Awake()
     {
         _attackBtn  = FindAnyObjectByType<AttackBtn>();
@@ -24,30 +26,35 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _attackBtn.PlaySwardSoundEvent += PlaySwardSound;
-        _attackBtn.PlayHitSoundEvent += PlayTakeHitSound;
-        _attackBtn.PlayDeathSoundEvent += PlayDeathSound;
+        _attackBtn.HitEvent += OnHitEvent;
+        _attackBtn.DeathEvent += OnDeathEvent;        
     }
 
     private void OnDisable()
     {
-        _attackBtn.PlaySwardSoundEvent -= PlaySwardSound;
-        _attackBtn.HitAnimationEvent -= PlayTakeHitSound;
-        _attackBtn.PlayDeathSoundEvent -= PlayDeathSound;
+        _attackBtn.HitEvent -= OnHitEvent;       
+        _attackBtn.DeathEvent -= OnDeathEvent;
     }
 
-    private void PlaySwardSound()
+    private void OnHitEvent()
     {
-        _audioSource?.PlayOneShot(_swordSound);
+        StartCoroutine(PlaySoundsWithDelay(_swordSound, _takeDamageSound, _delay));
     }
 
-    private void PlayTakeHitSound()
+    private void OnDeathEvent()
     {
-        _audioSource?.PlayOneShot(_takeDamageSound);
+        StartCoroutine(PlaySoundsWithDelay(_swordSound, _deathSound, _delay));
     }
 
-    private void PlayDeathSound()
+    private IEnumerator PlaySoundsWithDelay(AudioClip first, AudioClip second, float delay)
     {
-        _audioSource?.PlayOneShot(_deathSound);
+        PlaySound(first);
+        yield return new WaitForSeconds(delay);
+        PlaySound(second);
+    }
+
+    private void PlaySound(AudioClip audioClip)
+    {
+        _audioSource?.PlayOneShot(audioClip);
     }
 }

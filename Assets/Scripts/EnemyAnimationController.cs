@@ -18,14 +18,36 @@ public class EnemyAnimationController : MonoBehaviour
 
     private void OnEnable()
     {
-        _attackBtn.HitAnimationEvent += TakeDamage;
-        _attackBtn.DeathAnimationEvent += DeathAnimation;
+        _attackBtn.HitEvent += OnHitEvent;
+        _attackBtn.DeathEvent += OnDeathEvent;
     }
 
     private void OnDisable()
     {
-        _attackBtn.HitAnimationEvent -= TakeDamage;
-        _attackBtn.DeathAnimationEvent -= DeathAnimation;
+        _attackBtn.HitEvent -= TakeDamage;
+        _attackBtn.DeathEvent -= OnDeathEvent;
+    }
+
+    private void OnHitEvent()
+    {
+        StartCoroutine(PlayHitAnimWithDelay());
+    }
+
+    private void OnDeathEvent()
+    {
+        StartCoroutine(PlayHitAnimWithDelay());
+    }
+
+    private IEnumerator PlayHitAnimWithDelay()
+    {
+        yield return new WaitForSeconds(0.25f);
+        TakeDamage();
+    }
+
+    private IEnumerator PlayDeathAnimWithDelay()
+    {
+        yield return new WaitForSeconds(0.25f);
+        DeathAnimation();
     }
 
     private void TakeDamage()
