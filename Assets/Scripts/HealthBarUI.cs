@@ -38,7 +38,7 @@ public class HealthBarUI : MonoBehaviour
         float duration = 0.5f; // время за которое должна обновится полоска здоровья
         float elapsedTime = 0; // время которое прошло
         float startHeath = _prefHealth; // стартовое здоровье
-
+        // test
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime; // за каждой итерации будем добавлять значение времени
